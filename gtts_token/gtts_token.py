@@ -5,6 +5,7 @@ import time
 
 
 class Token:
+
     """ Token (Google Translate Token)
     Generate the current token key and allows generation of tokens (tk) with it
     Python version of `token-script.js` itself from translate.google.com
@@ -22,7 +23,7 @@ class Token:
     def calculate_token(self, text, seed=None):
         """ Calculate the request token (`tk`) of a string """
 
-        d = list(bytearray(text.encode('UTF-8')))
+        d = bytearray(text.encode('UTF-8'))
         a = seed if seed is not None else self.token_key
         if seed is None:
             seed = self.token_key
@@ -37,7 +38,9 @@ class Token:
         return str(a) + "." + str(a ^ seed)
 
     """ Functions used by the token calculation algorithm """
-    def _rshift(self, val, n): return val>>n if val >= 0 else (val+0x100000000)>>n
+    def _rshift(self, val, n):
+        return val >> n if val >= 0 else (val + 0x100000000) >> n
+
     def _work_token(self, a, seed):
         for i in range(0, len(seed) - 2, 3):
             char = seed[i + 2]
@@ -45,6 +48,3 @@ class Token:
             d = self._rshift(a, d) if seed[i + 1] == "+" else a << d
             a = a + d & 4294967295 if seed[i] == "+" else a ^ d
         return a
-
-if __name__ == "__main__":
-        pass
