@@ -48,6 +48,3 @@ class Token:
             d = self._rshift(a, d) if seed[i + 1] == "+" else a << d
             a = a + d & 4294967295 if seed[i] == "+" else a ^ d
         return a
-
-if __name__ == "__main__":
-        pass
