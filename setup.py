@@ -3,7 +3,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-exec(open('gtts/version.py').read())
+exec(open('gtts_token/version.py').read())
 
 setup(
     name='gTTS-token',
