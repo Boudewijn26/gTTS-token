@@ -3,7 +3,7 @@ gTTS-token
 
 **gTTS-token** (Google Text to Speech token): A python implementation of the token validation of Google Translate
 
-[![Build Status](https://travis-ci.org/pndurette/gTTS.svg?branch=master)](https://travis-ci.org/pndurette/gTTS)
+[![Build Status](https://travis-ci.org/Boudewijn26/gTTS-token.svg?branch=master)](https://travis-ci.org/Boudewijn26/gTTS-token)
 
 Install
 -------
