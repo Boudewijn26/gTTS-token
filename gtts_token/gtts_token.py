@@ -5,6 +5,7 @@ import time
 
 
 class Token:
+
     """ Token (Google Translate Token)
     Generate the current token key and allows generation of tokens (tk) with it
     Python version of `token-script.js` itself from translate.google.com
@@ -37,7 +38,9 @@ class Token:
         return str(a) + "." + str(a ^ seed)
 
     """ Functions used by the token calculation algorithm """
-    def _rshift(self, val, n): return val>>n if val >= 0 else (val+0x100000000)>>n
+    def _rshift(self, val, n):
+        return val >> n if val >= 0 else (val + 0x100000000) >> n
+
     def _work_token(self, a, seed):
         for i in range(0, len(seed) - 2, 3):
             char = seed[i + 2]

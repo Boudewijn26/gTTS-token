@@ -43,5 +43,6 @@ class TestToken(unittest.TestCase):
         text = u'¿ya estás volviendo a casa?'
         self.assertEqual('518335.115040', self.tokenizer.calculate_token(text, seed=403935))
 
+
 if __name__ == '__main__':
     unittest.main()
