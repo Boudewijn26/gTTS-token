@@ -39,5 +39,6 @@ class TestToken(unittest.TestCase):
     def test_bytes_input(self):
         text = "è"
         self.assertEqual('554589.941173', self.tokenizer.calculate_token(text, seed=404008))
+
 if __name__ == '__main__':
     unittest.main()
