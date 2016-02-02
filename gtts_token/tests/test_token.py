@@ -15,6 +15,11 @@ class TestToken(unittest.TestCase):
         text = 'Hello person'
         self.assertEqual('654469.1039188', self.tokenizer.calculate_token(text, seed=403409))
 
+    def test_chinese_token(self):
+        lang = 'zh'
+        text = '你好'
+        self.assertEqual('377608.255193', self.tokenizer.calculate_token(text, seed=403409))
+
     def test_work_token(self):
         token_key = 403404
         seed = '+-a^+6'
