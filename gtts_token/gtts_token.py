@@ -23,6 +23,8 @@ class Token:
     def calculate_token(self, text, seed=None):
         """ Calculate the request token (`tk`) of a string """
 
+        if isinstance(text, str):
+            text = unicode(text, 'UTF-8')
         d = bytearray(text.encode('UTF-8'))
         a = seed if seed is not None else self.token_key
         if seed is None:
