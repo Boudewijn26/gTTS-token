@@ -21,9 +21,18 @@ class Token:
         self.token_key = hours
 
     def calculate_token(self, text, seed=None):
-        """ Calculate the request token (`tk`) of a string """
+        """ Calculate the request token (`tk`) of a string
+        :param text: str The text to calculate a token for
+        :param seed: int The seed to use. By default this is the number of hours since epoch
+        """
 
-        d = bytearray(text.encode('UTF-8'))
+        try:
+            d = bytearray(text.encode('UTF-8'))
+        except UnicodeDecodeError:
+            # This will probably only occur when d is actually a str containing UTF-8 chars, which means we don't need
+            # to encode.
+            d = bytearray(text)
+
         a = seed if seed is not None else self.token_key
         if seed is None:
             seed = self.token_key
