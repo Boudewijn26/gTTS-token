@@ -15,7 +15,9 @@ setup(
     license='MIT',
     description='Calculates a token to run the Google Translate text to speech',
     long_description=open('README.md').read(),
-    install_requires=[],
+    install_requires=[
+        "requests"
+    ],
     classifiers=[
           'Environment :: Console',
           'Intended Audience :: Developers',
