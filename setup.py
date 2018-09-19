@@ -8,9 +8,10 @@ exec(open('gtts_token/version.py').read())
 setup(
     name='gTTS-token',
     version=__version__,
-    author='Boudewijn van Groos',
-    author_email='boudewijn@vangroos.nl',
-    url='https://github.com/boudewijn26/gTTS-token',
+    author='Guy Dipietro',
+    author_email='Guy_Dipietro@bose.com',
+    url='https://github.com/BoseCorp/gTTS-token',
+    download_url="https://ingress-platform.live-aws-useast1.bose.io/dev/svc-core-devops-nexus/prod/core-devops-nexus-core/repository/gTTS-token-Bose/",
     packages=['gtts_token'],
     license='MIT',
     description='Calculates a token to run the Google Translate text to speech',
