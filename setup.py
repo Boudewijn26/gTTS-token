@@ -6,7 +6,7 @@ except ImportError:
 exec(open('gtts_token/version.py').read())
 
 setup(
-    name='gTTS-token-guy',
+    name='gTTS-token',
     version=__version__,
     author='Guy Dipietro',
     author_email='Guy_Dipietro@bose.com',
