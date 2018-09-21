@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import calendar
 import math
-import time
-import requests
 import re
+import time
+
+import requests
 
 
 class Token:
@@ -58,15 +59,15 @@ class Token:
         response = requests.get("https://translate.google.com/")
         line = response.text.split('\n')[-1]
 
-        tkk_expr = re.search(".*?(TKK=.*?;)W.*?", line).group(1)
-        a = re.search("a\\\\x3d(-?\d+);", tkk_expr).group(1)
-        b = re.search("b\\\\x3d(-?\d+);", tkk_expr).group(1)
+        parsed = re.search("(?:TKK='(?:(\d+)\.(\d+))';)", line)
+        a, b = parsed.groups()
 
         result = str(hours) + "." + str(int(a) + int(b))
         self.token_key = result
         return result
 
     """ Functions used by the token calculation algorithm """
+
     def _rshift(self, val, n):
         return val >> n if val >= 0 else (val + 0x100000000) >> n
 
