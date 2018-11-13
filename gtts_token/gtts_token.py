@@ -15,7 +15,8 @@ class Token:
     SALT_1 = "+-a^+6"
     SALT_2 = "+-3^+b+-f"
 
-    def __init__(self):
+    def __init__(self, proxies=None):
+        self.proxies = proxies
         self.token_key = None
 
     def calculate_token(self, text, seed=None):
@@ -52,7 +53,7 @@ class Token:
         if self.token_key is not None:
             return self.token_key
 
-        response = requests.get("https://translate.google.com/")
+        response = requests.get("https://translate.google.com/", proxies=self.proxies)
         line = response.text.split('\n')[-1]
         tkk_expr = re.search(".*?(TKK=.*?;)W.*?", line).group(1)
 
