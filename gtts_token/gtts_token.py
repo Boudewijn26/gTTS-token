@@ -15,8 +15,9 @@ class Token:
     SALT_1 = "+-a^+6"
     SALT_2 = "+-3^+b+-f"
 
-    def __init__(self):
+    def __init__(self, country_domain_name='com'):
         self.token_key = None
+        self.country_domain_name = country_domain_name
 
     def calculate_token(self, text, seed=None):
         """ Calculate the request token (`tk`) of a string
@@ -52,7 +53,8 @@ class Token:
         if self.token_key is not None:
             return self.token_key
 
-        response = requests.get("https://translate.google.com/")
+        response = requests.get("https://translate.google.%s/" % self.country_domain_name)
+        line = response.text.split('\n')[-1]
         tkk_expr = re.search("(tkk:.*?),", response.text)
         if not tkk_expr:
             raise ValueError(
