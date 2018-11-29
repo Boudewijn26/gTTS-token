@@ -5,6 +5,11 @@ This file adheres to [Keep a CHANGELOG](http://keepachangelog.com).
 
 ## [Unreleased]
 
+# 1.1.2 - 2018-09-21
+### Changed
+- Include License in PyPi tarball
+- Fix issues with the RegEx failing
+
 # 1.1.1 - 2016-05-10
 ### Changed
 - Adapted to the new Google Translate token generation. It now requires a http request to get the token key.
