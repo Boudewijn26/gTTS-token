@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This file adheres to [Keep a CHANGELOG](http://keepachangelog.com).
 
 ## [Unreleased]
+# 1.1.3 - 2018-11-29
+- Adapt to new Google Translate version
 
 # 1.1.2 - 2018-09-21
 ### Changed
