@@ -14,6 +14,7 @@ class Token:
 
     SALT_1 = "+-a^+6"
     SALT_2 = "+-3^+b+-f"
+    TKK = 'tkk:'  # the way the token is identified in page
 
     def __init__(self):
         self.token_key = None
@@ -53,7 +54,10 @@ class Token:
             return self.token_key
 
         response = requests.get("https://translate.google.com/")
-        match = re.search(".*?(tkk:.*?;).*?", response.text)
+        for line in response.text.split('\n'):
+            if self.TKK in line:
+                break
+        match = re.search(".*?({token}.*?;).*?".format(token=self.TKK), line)
         if not match:
             raise ValueError("Token cannot be found in Google Translate page :/")
         tkk_expr = match.group(1)
