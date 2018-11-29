@@ -10,22 +10,26 @@ class Token:
     """ Token (Google Translate Token)
     Generate the current token key and allows generation of tokens (tk) with it
     Python version of `token-script.js` itself from translate.google.com
+
+    :param proxies: dict Proxies to use with requests module for connecting translator service
     """
 
     SALT_1 = "+-a^+6"
     SALT_2 = "+-3^+b+-f"
 
-    def __init__(self):
+    def __init__(self, proxies=None):
         self.token_key = None
+        self.proxies = proxies
 
-    def calculate_token(self, text, seed=None):
+    def calculate_token(self, text, seed=None, proxies=None):
         """ Calculate the request token (`tk`) of a string
         :param text: str The text to calculate a token for
         :param seed: str The seed to use. By default this is the number of hours since epoch
+        :param proxies: dict Proxies to use with requests module for connecting translator service, overrides existing proxies for 1 request
         """
 
         if seed is None:
-            seed = self._get_token_key()
+            seed = self._get_token_key(proxies or self.proxies)
 
         [first_seed, second_seed] = seed.split(".")
 
@@ -48,11 +52,12 @@ class Token:
         a = int(a)
         return str(a) + "." + str(a ^ int(first_seed))
 
-    def _get_token_key(self):
+    def _get_token_key(self, proxies):
         if self.token_key is not None:
             return self.token_key
 
-        response = requests.get("https://translate.google.com/")
+        response = requests.get(
+            "https://translate.google.com/", proxies=proxies)
         tkk_expr = re.search("(tkk:.*?),", response.text)
         if not tkk_expr:
             raise ValueError(
