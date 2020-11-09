@@ -15,8 +15,13 @@ class Token:
     SALT_1 = "+-a^+6"
     SALT_2 = "+-3^+b+-f"
 
-    def __init__(self):
+    def __init__(self, max_retries=5):
+        """
+        :param max_retries: int Number of conducted token key retrieval retries
+            before error will be thrown """
+
         self.token_key = None
+        self._max_retries = max_retries
 
     def calculate_token(self, text, seed=None):
         """ Calculate the request token (`tk`) of a string
@@ -25,7 +30,10 @@ class Token:
         """
 
         if seed is None:
-            seed = self._get_token_key()
+            if self.token_key is None:
+                seed = self._get_token_key()
+            else:
+                seed = self.token_key
 
         [first_seed, second_seed] = seed.split(".")
 
@@ -48,16 +56,17 @@ class Token:
         a = int(a)
         return str(a) + "." + str(a ^ int(first_seed))
 
-    def _get_token_key(self):
-        if self.token_key is not None:
-            return self.token_key
-
+    def _get_token_key(self, retry=0):
         response = requests.get("https://translate.google.com/")
         tkk_expr = re.search("(tkk:.*?),", response.text)
-        if not tkk_expr:
-            raise ValueError(
-                "Unable to find token seed! Did https://translate.google.com change?"
-            )
+
+        if tkk_expr is None:
+            if retry == self._max_retries:
+                raise ValueError(
+                    "Unable to find token seed! Did https://translate.google.com change?"
+                )
+            else:
+                return self._get_token_key(retry=retry + 1)
 
         tkk_expr = tkk_expr.group(1)
         try:
