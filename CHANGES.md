@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This file adheres to [Keep a CHANGELOG](http://keepachangelog.com).
 
 ## [Unreleased]
+- Switch to latest python
+- Fix regex deprecation
+- Allow custom country code
+
 # 1.1.3 - 2018-11-29
 - Adapt to new Google Translate version
 
