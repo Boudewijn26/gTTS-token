@@ -7,6 +7,7 @@ This file adheres to [Keep a CHANGELOG](http://keepachangelog.com).
 - Switch to latest python
 - Fix regex deprecation
 - Allow custom country code
+- Add retry mechanism
 
 # 1.1.3 - 2018-11-29
 - Adapt to new Google Translate version
