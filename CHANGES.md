@@ -4,10 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This file adheres to [Keep a CHANGELOG](http://keepachangelog.com).
 
 ## [Unreleased]
+# 1.1.4 - 2020-11-09
 - Switch to latest python
 - Fix regex deprecation
-- Allow custom country code
-- Add retry mechanism
+- Allow custom country code (Thanks @onsunl)
+- Add retry mechanism (Thanks @w2sv)
 
 # 1.1.3 - 2018-11-29
 - Adapt to new Google Translate version
