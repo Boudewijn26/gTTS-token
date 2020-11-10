@@ -1,9 +1,9 @@
-gTTS-token
+gTTS-token ![Build status](https://github.com/Boudewijn26/gTTS-token/workflows/Build%20status/badge.svg)
 ====
 
 **gTTS-token** (Google Text to Speech token): A python implementation of the token validation of Google Translate
 
-[![Build Status](https://travis-ci.org/Boudewijn26/gTTS-token.svg?branch=master)](https://travis-ci.org/Boudewijn26/gTTS-token)
+
 
 Install
 -------
