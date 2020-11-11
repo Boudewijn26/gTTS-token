@@ -78,4 +78,49 @@ const source = context.createBufferSource();
 context.decodeAudioData(decoded.buffer, (audioBuffer) => { source.buffer = audioBuffer; source.connect(context.destination); source.start(0); })
 ```
 
-You should hear the text your entered. With all this confirmed, now all we have to do is find a way to call "jQ1olc" ourselves. More to follow.
+You should hear the text you entered. With all this confirmed, now all we have to do is find a way to call "jQ1olc" ourselves. More to follow.
+
+## Ladies and gentlemen, we've got him
+
+[I think I have a mostly working implementation](https://github.com/Boudewijn26/gTTS/commit/aea95c9623985c02a95483d49ebec6dae61b956c). I'll walk you through how I got there.
+
+Taking the request to "jQ1olc", the first thing one should try is just replaying it. Most dev tools will allow you to do so with right clicking on the request in your network tab. This succeeds and tells us there is no single use token. Waiting an hour and replaying and we can be sure there is no time based token at work either. Then it's time to play around with the request. My favorite tool for this is Postman. You can copy the request to cURL and import it into Postman without a hassle. There are many other tools, which do the same, I'm familiar with Postman.
+
+Once there, the first thing to try is changing the text while keeping everything the same. That'll tell if there is a special value being calculated based on the text itself, which we'd have to recreate. This still succeeds. Looking good. Only thing left is to see which of all these values are actually necessary. So if we flip them off one by one, after a while we're left with:
+
+* The Content-Type header
+* None of the query params
+* The POST body
+
+Then how is the body constructed? The raw body looks something like
+
+```
+f.req=%5B%5B%5B%22jQ1olc%22%2C%22%5B%5C%22hello%5C%22%2C%5C%22en%5C%22%2Cnull%2C%5C%22null%5C%22%5D%22%2Cnull%2C%22generic%22%5D%5D%5D&
+```
+
+That certainly looks uri encoded and indeed:
+
+```javascript
+decodeURIComponent("%5B%5B%5B%22jQ1olc%22%2C%22%5B%5C%22hello%5C%22%2C%5C%22en%5C%22%2Cnull%2C%5C%22null%5C%22%5D%22%2Cnull%2C%22generic%22%5D%5D%5D")
+=> "[[["jQ1olc","[\"hello\",\"en\",null,\"null\"]",null,"generic"]]]"
+```
+
+So, 3 arrays nested inside each other. The inner array has `"jQ1olc"`, `"[\"hello\",\"en\",null,\"null\"]"`, `null`, `"generic"`. As elements. As indicated by the rpcids param, the `"jQ1olc"` is the name of the RPC we're calling. `"[\"hello\",\"en\",null,\"null\"]"` appears to be another array which was `JSON.stringify`d. Not sure what `null` is doing, we see it in all of the other RPCs as well. `"generic"` appears to be indicate the type of RPC.
+
+So on to splitting out ``"[\"hello\",\"en\",null,\"null\"]"`. So stated this is another array which is `JSON.stringify`d. So we have `"hello"` which is our text. `"en"` which is our locale. Spoiling a bit of the results `null` or `true` in the second request appears to be the speed, with `true` being slower, which is why that response is a bit bigger. The difference doesn't seem to be very big, but still noticable. I've yet to find out what `"null"` is doing, it could perhaps indicate the preferred voice style. Why this is a `"null"` string instead of `null` is also unclear to me.
+
+So if you want to build this payload, we build an array of our text, locale, `null` or `true` and "null". `JSON.stringify` it. Build a nesting of 3 arrays with the inner one being "jQ1olc", the result of `stringify`, `null` and "generic". Then `encodeURIComponent` it. Or in code
+
+```javascript
+function(text, locale, slow) {
+  return encodeURIComponent([[["jQ1olc", JSON.stringify([text, locale, slow ? true : null, "null"]), null, "generic"]]]);
+}
+```
+
+You can try some texts, copy the result from Postman and throw it into our audio decode snippet from above to verify. In all this, you may notice a distinct lack of tokens in there. This isn't looking very good for gTTS-token. Oh well.
+
+## Finishing up
+
+So all that's left is to port this to Python. I've already gotten a [working version of gTTS](https://github.com/Boudewijn26/gTTS), so it's looking very promising. Just some finishing up to finalize it.
+
+However this does appear to leave gTTS-token in a bit of a void. A project specifically written to generate tokens for a service which no longer requires tokens, isn't particularly useful. I'll update the README to reflect that aspect of this project and let this guide serve as a means for everyone to update their implementations and help with future investigations. Feel free to @ me if/when things break again.
