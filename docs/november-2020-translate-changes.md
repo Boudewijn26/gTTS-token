@@ -75,7 +75,7 @@ const encodedAudio = eval(response[0][2])[0] // Be sure to check the value of re
 const decoded = Uint8Array.from(atob(encodedAudio), (e) => e.charCodeAt(0));
 const context = new AudioContext();
 const source = context.createBufferSource();
-context.decodeAudioData(decoded.buffer, (audioBuffer) => { source.buffer = audioBuffer; source.connect(a.destination); source.start(0); })
+context.decodeAudioData(decoded.buffer, (audioBuffer) => { source.buffer = audioBuffer; source.connect(context.destination); source.start(0); })
 ```
 
 You should hear the text your entered. With all this confirmed, now all we have to do is find a way to call "jQ1olc" ourselves. More to follow.
